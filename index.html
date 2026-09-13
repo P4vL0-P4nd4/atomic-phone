@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atomic Phone — One · One S · One XS</title>
+<meta name="description" content="Atomic Phone. Titanium, 200MP, hardware kill switches, removable camera, mic and radio covers, and Atomic OS with a built-in pentesting toolkit. In development — reserve with a fully refundable deposit.">
+<meta property="og:title" content="Atomic Phone — Your phone. Not theirs.">
+<meta property="og:description" content="One · One S · One XS. In active development. Reserve your place in line with a fully refundable deposit.">
+<meta property="og:image" content="https://phone.atomicai.ch/posters/one-black-turquoise.webp">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Crect x='10' y='5' width='12' height='22' rx='3' fill='none' stroke='%2303fcec' stroke-width='2'/%3E%3Crect x='13' y='16' width='6' height='2.5' rx='1' fill='%2303fcec'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="modulepreload" href="lib/model-viewer.min.js">
+<script type="module" src="lib/model-viewer.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   Palette — exactly three things: black, white (in opacity steps), and
+   the accent #03FCEC — also applied inside the Black/Turquoise model textures
+   (kill switch, camera rings, wordmark, OLED strip). Nothing else in the chrome.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000;
+  --ink:#fff; --ink-2:rgba(255,255,255,.72); --ink-3:rgba(255,255,255,.48); --ink-4:rgba(255,255,255,.26);
+  --rule:rgba(255,255,255,.14); --rule-soft:rgba(255,255,255,.08);
+  --tq:#03fcec; --tq-2:rgba(3,252,236,.7); --tq-3:rgba(3,252,236,.32); --tq-4:rgba(3,252,236,.12);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(0,0,.2,1); --ease-io:cubic-bezier(.4,0,.6,1);
+  --bar:52px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:var(--bg)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button,select{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{max-width:100%;display:block}
+::selection{background:var(--tq);color:#000}
+:focus-visible{outline:2px solid var(--tq);outline-offset:4px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── type scale ─────────────────────────────────────────────────────── */
+.eyebrow{font-size:clamp(15px,1.3vw,19px);font-weight:600;color:var(--ink-3);letter-spacing:-.01em;margin-bottom:14px}
+.eyebrow.tq{color:var(--tq)}
+.claim{font-weight:700;letter-spacing:-.045em;line-height:.98;font-size:clamp(46px,7.6vw,112px);color:var(--ink)}
+.claim-md{font-weight:700;letter-spacing:-.04em;line-height:1.02;font-size:clamp(38px,5.6vw,84px);color:var(--ink)}
+.copy{font-size:clamp(18px,1.55vw,22px);line-height:1.5;color:var(--ink-2);max-width:40ch;font-weight:500;letter-spacing:-.012em}
+.copy b{color:var(--ink);font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+.rule{height:1px;background:var(--rule);border:0}
+.section{padding:clamp(96px,14vw,200px) 0}
+.tq{color:var(--tq)}
+
+/* ── buttons ────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;font-size:17px;font-weight:500;letter-spacing:-.01em;text-decoration:none;transition:background .25s var(--ease),color .25s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);white-space:nowrap}
+.btn-fill{background:var(--tq);color:#000}
+.btn-fill:hover{background:#fff;color:#000;transform:translateY(-1px);box-shadow:0 10px 30px -8px var(--tq-2)}
+.btn-line{color:var(--tq);box-shadow:inset 0 0 0 1.5px var(--tq)}
+.btn-line:hover{background:var(--tq);color:#000}
+.btn:active{transform:scale(.97)}
+.btn-lg{min-height:52px;padding:0 28px;font-size:18px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ── top bar ────────────────────────────────────────────────────────── */
+.topbar{position:sticky;top:0;z-index:50;height:var(--bar);background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--rule-soft)}
+.topbar-in{height:100%;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;font-weight:600;font-size:18px;letter-spacing:-.02em;color:var(--ink)}
+.brand small{font-size:12px;color:var(--ink-3);font-weight:500}
+.topbar nav{margin-left:auto;display:flex;align-items:center;gap:22px;font-size:14px;color:var(--ink-2)}
+.topbar nav a{text-decoration:none;transition:color .2s}
+.topbar nav a:hover{color:var(--ink)}
+.topbar nav .btn{min-height:32px;padding:0 14px;font-size:14px}
+@media (max-width:640px){.topbar nav a.plain{display:none}}
+
+/* ── viewer ─────────────────────────────────────────────────────────── */
+.v{position:relative;width:100%;height:100%;min-height:280px}
+.v model-viewer{width:100%;height:100%;display:block;background:transparent;--poster-color:transparent;--progress-bar-color:transparent;--progress-bar-height:0}
+.v-skel{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .6s var(--ease)}
+.v-skel.off{opacity:0}
+.v-skel i{width:min(26%,140px);aspect-ratio:1/2.05;border-radius:12%/6%;border:1px solid var(--rule);background:#000;animation:sk 1.6s var(--ease-io) infinite}
+@keyframes sk{50%{border-color:var(--tq-3)}}
+.v-prog{position:absolute;left:50%;bottom:10%;transform:translateX(-50%);width:120px;height:2px;background:var(--rule-soft);overflow:hidden;border-radius:2px}
+.v-prog b{display:block;height:100%;width:0;background:var(--tq);transition:width .3s var(--ease)}
+.v-hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:rgba(0,0,0,.7);border:1px solid var(--rule);color:var(--ink-2);font-size:13px;font-weight:500;opacity:0;transition:opacity .5s var(--ease);pointer-events:none;white-space:nowrap;backdrop-filter:blur(8px)}
+.v-hint.on{opacity:1}
+.v-hint svg{width:16px;height:16px;color:var(--tq);animation:wig 2.4s var(--ease-io) infinite}
+@keyframes wig{50%{transform:rotate(-24deg)}}
+.v-reset{position:absolute;right:16px;bottom:16px;display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(0,0,0,.7);border:1px solid var(--rule);color:var(--ink-2);font-size:12px;font-weight:500;opacity:0;transition:opacity .3s,color .2s,border-color .2s;backdrop-filter:blur(8px)}
+.v-reset svg{width:13px;height:13px}
+.v-reset:hover{color:var(--ink);border-color:var(--tq)}
+.v.ready .v-reset{opacity:1}
+.v-na{position:absolute;inset:0;display:none;place-items:center;text-align:center;color:var(--ink-2);font-size:15px;padding:24px}
+.v.na .v-na{display:grid}.v.na .v-hint,.v.na .v-reset,.v.na .v-skel{display:none}
+.v.fixed .v-hint,.v.fixed .v-reset{display:none}
+
+/* ── hero ───────────────────────────────────────────────────────────── */
+.hero{padding:clamp(56px,9vh,120px) 0 0;text-align:center}
+.hero .claim{margin:0 auto;max-width:14ch}
+.hero .sub{margin:26px auto 0;font-size:clamp(19px,2vw,26px);font-weight:500;color:var(--ink-2);letter-spacing:-.02em}
+.hero .cta{display:flex;justify-content:center;gap:14px;margin-top:30px;flex-wrap:wrap}
+.stage{position:relative;width:100vw;margin-left:calc(50% - 50vw)}
+.stage-hero{height:min(100vh,1000px);height:min(100svh,1000px);margin-top:clamp(8px,2vh,24px)}
+.stage-hero .v{height:100%}
+.hero-notice{border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);padding:18px 0;font-size:14.5px;color:var(--ink-3);text-align:center;line-height:1.55}
+.hero-notice b{color:var(--ink-2);font-weight:600}
+.hero-notice a{color:var(--tq);text-decoration:none}
+html.js .hero>*:not(.stage){animation:up .9s var(--ease) both}
+html.js .hero>:nth-child(1){animation-delay:.1s}html.js .hero>:nth-child(2){animation-delay:.2s}html.js .hero>:nth-child(3){animation-delay:.3s}html.js .hero>:nth-child(4){animation-delay:.4s}
+html.js .stage-hero{animation:up 1.1s var(--ease) .35s both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ── model picker ───────────────────────────────────────────────────── */
+.models{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,40px);margin-top:clamp(36px,5vw,64px)}
+.model{text-align:left;padding:28px 0 0;border-top:1px solid var(--rule);transition:border-color .3s var(--ease)}
+.model .name{font-weight:700;letter-spacing:-.05em;line-height:.9;font-size:clamp(56px,8vw,128px);color:var(--ink-4);transition:color .35s var(--ease)}
+.model[aria-pressed="true"]{border-color:var(--tq)}
+.model[aria-pressed="true"] .name{color:var(--ink)}
+.model:hover .name{color:var(--ink-2)}
+.model[aria-pressed="true"]:hover .name{color:var(--ink)}
+.model .meta{margin-top:18px;font-size:15.5px;color:var(--ink-3);line-height:1.6}
+.model .meta b{display:block;color:var(--ink-2);font-weight:600}
+.model .meta .tq{font-weight:600}
+@media (max-width:760px){.models{grid-template-columns:1fr;gap:6px}.model{padding:20px 0 18px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px}.model .name{font-size:clamp(46px,14vw,72px)}.model .meta{margin:0;text-align:right}}
+
+/* ── compare with ───────────────────────────────────────────────────── */
+.cmp-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
+.cmp-head .lbl{font-size:clamp(20px,2.2vw,28px);font-weight:600;letter-spacing:-.02em;color:var(--ink-2)}
+.sel{position:relative;display:inline-flex;align-items:center}
+.sel select{appearance:none;-webkit-appearance:none;padding:10px 44px 10px 18px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--tq);color:var(--tq);font-size:clamp(18px,2vw,24px);font-weight:600;letter-spacing:-.02em;background:#000;transition:background .25s,color .25s}
+.sel select:hover{background:var(--tq);color:#000}
+.sel select option{background:#000;color:#fff;font-size:16px}
+.sel::after{content:"";position:absolute;right:18px;top:50%;width:9px;height:9px;border-right:2px solid var(--tq);border-bottom:2px solid var(--tq);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.sel:hover::after{border-color:#000}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:30px 26px 26px;border-radius:22px;background:#000;box-shadow:inset 0 0 0 1px var(--rule);min-height:196px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.stat .big{font-weight:700;letter-spacing:-.04em;line-height:1;font-size:clamp(34px,3.6vw,52px);color:var(--ink);white-space:nowrap}
+.stat .big.long{font-size:clamp(26px,2.7vw,40px)}
+.stat .big.win{color:var(--tq)}
+.stat .big small{display:block;font-size:14px;font-weight:600;color:var(--ink-3);letter-spacing:0;margin-bottom:8px}
+.stat .lab{font-size:15px;color:var(--ink-2);font-weight:500;line-height:1.4;margin-top:8px}
+.stat .vs{padding-top:12px;border-top:1px solid var(--rule-soft);font-size:14px;color:var(--ink-3);line-height:1.45}
+.stat .vs b{color:var(--ink-2);font-weight:600}
+.cmp-note{margin-top:18px;font-size:13.5px;color:var(--ink-3);line-height:1.6;max-width:70ch}
+.cmp-note i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--tq);vertical-align:-1px;margin-right:6px}
+@media (max-width:980px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.stats{grid-template-columns:1fr}.stat{min-height:0}}
+
+/* ── colorway picker ────────────────────────────────────────────────── */
+.stage-color{height:min(88vh,900px);height:min(88svh,900px)}
+.stage-color .v{height:100%}
+.finish{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:-8px;text-align:center}
+.finish .fname{font-size:clamp(18px,2vw,24px);font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.finish .fname small{display:block;font-size:14px;color:var(--ink-3);font-weight:500;margin-top:4px}
+.swatches{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding-top:14px}
+/* Swatches carry the product's real colours — the one place a non-palette
+   colour is rendered in the chrome, because it *is* the product colour. */
+.sw{position:relative;width:38px;height:38px;border-radius:50%;padding:0;background:transparent;transition:transform .3s var(--ease);display:inline-block}
+.sw::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--tq);opacity:0;transform:scale(.7);transition:opacity .3s var(--ease),transform .45s var(--ease)}
+.sw[aria-checked="true"]::before{opacity:1;transform:scale(1)}
+.sw i{position:absolute;inset:2px;border-radius:50%;background:var(--base);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);transition:transform .4s var(--ease)}
+.sw i::after{content:"";position:absolute;inset:0;background:var(--accent);clip-path:polygon(100% 0,100% 100%,0 100%)}
+.sw:hover{transform:scale(1.08)}
+.sw[aria-checked="true"] i{transform:scale(.84)}
+.sw .ltd{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--tq)}
+
+/* ── feature sections ───────────────────────────────────────────────── */
+.feat{padding:clamp(80px,10vw,150px) 0 0}
+.macro{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:min(72vh,760px);height:min(72svh,760px)}
+.macro .v{height:100%}
+.macro::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,transparent,#000);pointer-events:none}
+.feat-text{padding:clamp(40px,6vw,80px) 0 clamp(80px,10vw,150px)}
+.feat-text .copy{margin-top:26px}
+.feat-text .copy+.copy{margin-top:16px}
+.keys{margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px 32px;max-width:920px}
+.key{border-top:1px solid var(--rule);padding-top:14px}
+.key b{display:block;font-size:22px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
+.key span{display:block;font-size:14px;color:var(--ink-3);margin-top:4px;line-height:1.45}
+.callout{margin-top:30px;padding:22px 26px;border-radius:20px;background:#000;border:1px solid var(--tq-3);font-size:17px;line-height:1.55;color:var(--ink-2);max-width:760px}
+.callout b{color:var(--ink);font-weight:600}
+.sides{display:inline-flex;gap:4px;margin-top:28px;padding:4px;border-radius:999px;border:1px solid var(--rule)}
+.sides button{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-2);transition:background .25s,color .25s}
+.sides button[aria-pressed="true"]{background:var(--tq);color:#000}
+
+/* ── security ───────────────────────────────────────────────────────── */
+.sec .copy{margin-top:26px}
+.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(28px,4vw,56px) clamp(28px,5vw,72px);margin-top:clamp(48px,6vw,80px)}
+.sec-item{border-top:1px solid var(--rule);padding-top:22px}
+.sec-item .n{font-family:var(--mono);font-size:13px;color:var(--tq);letter-spacing:.1em;margin-bottom:12px}
+.sec-item h3{font-size:clamp(22px,2.2vw,28px);font-weight:700;letter-spacing:-.03em;line-height:1.15}
+.sec-item p{margin-top:10px;font-size:16.5px;line-height:1.55;color:var(--ink-2)}
+.sec-item p b{color:var(--ink);font-weight:600}
+.term{margin-top:clamp(48px,6vw,80px);border:1px solid var(--tq-3);border-radius:18px;background:#000;font-family:var(--mono);font-size:14px;line-height:1.75;overflow:hidden;box-shadow:0 30px 80px -30px var(--tq-3)}
+.term-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--tq-4);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.term-top b{color:var(--tq);font-weight:500}
+.term-body{padding:18px 20px 22px;min-height:230px;color:var(--ink-2);white-space:pre-wrap;word-break:break-word}
+.term-body .p{color:var(--tq)}
+.term-body .w{color:var(--ink)}
+.term-body .cur{display:inline-block;width:8px;height:15px;background:var(--tq);vertical-align:-2px;margin-left:2px;animation:blink 1.05s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.gut{margin-top:clamp(48px,6vw,80px);font-size:clamp(26px,3.2vw,44px);font-weight:700;letter-spacing:-.035em;line-height:1.12;max-width:26ch}
+.gut b{color:var(--tq)}
+@media (max-width:720px){.sec-grid{grid-template-columns:1fr}}
+
+/* ── comparison table ───────────────────────────────────────────────── */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:clamp(36px,5vw,64px)}
+table.tbl{width:100%;border-collapse:collapse;min-width:780px;font-size:16px}
+.tbl th,.tbl td{padding:18px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule-soft)}
+.tbl thead th{font-size:19px;font-weight:700;letter-spacing:-.02em;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.tbl thead th.us{color:var(--tq)}
+.tbl thead th small{display:block;font-size:13px;color:var(--ink-3);font-weight:500;margin-top:4px;letter-spacing:0}
+.tbl th.rl{font-weight:500;color:var(--ink-3);width:220px;font-size:15px}
+.tbl td small{display:block;color:var(--ink-3);font-size:13.5px;margin-top:3px;line-height:1.45}
+.tbl td .win{color:var(--tq);font-weight:600}
+.tbl td .win::before{content:"";display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--tq);margin-right:8px;vertical-align:-2px;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.tbl td .par{color:var(--ink-2)}
+.tbl td .no{color:var(--ink-3)}
+.tbl-note{margin-top:16px;font-size:13.5px;color:var(--ink-3);line-height:1.6;max-width:80ch}
+
+/* ── reserve ────────────────────────────────────────────────────────── */
+.res{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(28px,5vw,72px);margin-top:clamp(40px,5vw,64px);align-items:start}
+.step{padding:30px 0;border-top:1px solid var(--rule)}
+.step-h{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+.step-h .n{font-family:var(--mono);font-size:13px;color:var(--tq);letter-spacing:.1em}
+.step-h h3{font-size:24px;font-weight:700;letter-spacing:-.03em}
+.step-h .sel-v{margin-left:auto;font-size:14px;color:var(--ink-3)}
+.opts{display:grid;gap:10px}
+.opts.c3{grid-template-columns:repeat(3,1fr)}.opts.c4{grid-template-columns:repeat(4,1fr)}
+.opt{text-align:left;padding:16px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow .25s var(--ease),background .3s var(--ease),transform .3s var(--ease);display:flex;flex-direction:column;gap:4px}
+.opt:hover{box-shadow:inset 0 0 0 1px var(--tq);transform:translateY(-1px)}
+.opt[aria-checked="true"]{box-shadow:inset 0 0 0 2px var(--tq);background:#000}
+.opt b{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.opt small{font-size:13px;color:var(--ink-3);line-height:1.4}
+.opt .p{font-size:13px;color:var(--tq);font-weight:600;margin-top:2px}
+.opt.cw{flex-direction:row;align-items:center;gap:12px}
+.opt.cw .sw{width:30px;height:30px;flex:none;pointer-events:none}
+.opt.cw .sw::before{display:none}
+.opt.cw .t b{display:block;font-size:15px}.opt.cw .t small{display:block}
+.side{position:sticky;top:calc(var(--bar) + 20px)}
+.summary{border-radius:26px;box-shadow:inset 0 0 0 1px var(--tq-3);overflow:hidden;background:#000}
+.summary .v{height:300px;min-height:300px}
+.sum-body{padding:22px 24px 24px}
+.sum-body h3{font-size:24px;font-weight:700;letter-spacing:-.03em}
+.sum-body .cfg{font-size:14px;color:var(--ink-3);margin-top:2px}
+.rows{margin:20px 0 4px;border-top:1px solid var(--rule)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule-soft);font-size:15px;color:var(--ink-2)}
+.row b{color:var(--ink);font-weight:600}
+.row.dep b{color:var(--tq);font-size:18px}
+.disclose{margin:18px 0;padding:16px 18px;border-radius:16px;background:#000;box-shadow:inset 0 0 0 1px var(--rule);font-size:14px;line-height:1.6;color:var(--ink-2)}
+.disclose b{color:var(--ink);font-weight:600}
+.disclose a{color:var(--tq);text-decoration:none}
+.summary .btn{width:100%}
+.err{display:none;margin-top:12px;font-size:14px;color:var(--ink);line-height:1.5;padding:12px 14px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--tq)}
+.err.on{display:block}
+.err a{color:var(--tq)}
+.fine{margin-top:12px;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+.fine a{color:var(--ink-2)}
+.banner{display:none;margin-top:32px;padding:22px 26px;border-radius:20px;box-shadow:inset 0 0 0 1.5px var(--tq);background:#000}
+.banner.on{display:block}
+.banner h3{font-size:24px;font-weight:700;letter-spacing:-.03em}
+.banner p{margin-top:8px;font-size:16px;color:var(--ink-2);line-height:1.6}
+.banner a{color:var(--tq)}
+@media (max-width:960px){.res{display:block}.side{position:static;margin-top:20px}.opts.c4{grid-template-columns:repeat(2,1fr)}.opts.c3{grid-template-columns:1fr}}
+@media (max-width:520px){.opts.c4{grid-template-columns:repeat(2,1fr)}}
+
+/* ── footer ─────────────────────────────────────────────────────────── */
+.foot{border-top:1px solid var(--rule);padding:56px 0 48px;font-size:14px;color:var(--ink-3)}
+.foot-note{font-size:14.5px;line-height:1.65;color:var(--ink-2);max-width:78ch}
+.foot-note b{color:var(--ink);font-weight:600}
+.foot-note a{color:var(--tq);text-decoration:none}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-top:40px}
+.foot h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:600}
+.foot ul{list-style:none}
+.foot li{margin-bottom:9px}
+.foot a{color:var(--ink-2);text-decoration:none;transition:color .2s}
+.foot a:hover{color:var(--tq)}
+.foot-brand p{margin-top:12px;line-height:1.6;max-width:36ch}
+.foot-bottom{margin-top:40px;padding-top:22px;border-top:1px solid var(--rule-soft);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px}
+@media (max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+/* ── fixed price / availability pill ────────────────────────────────── */
+.pill{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 18px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid var(--rule);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 20px 50px -20px rgba(0,0,0,.9);transform:translateY(20px);opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .5s var(--ease)}
+.pill.on{opacity:1;transform:none;pointer-events:auto}
+.pill .t{font-size:14px;line-height:1.25}
+.pill .t b{display:block;font-weight:600;color:var(--ink)}
+.pill .t span{color:var(--ink-3);font-size:12.5px}
+.pill .btn{min-height:36px;padding:0 16px;font-size:14px}
+@media (max-width:560px){.pill{right:12px;left:12px;bottom:12px;justify-content:space-between}}
+
+/* ── reveals ────────────────────────────────────────────────────────── */
+html.js .rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .8s var(--ease)}
+html.js .rv.in{opacity:1;transform:none}
+html.js .rv-kids>*{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease),transform .75s var(--ease)}
+html.js .rv-kids.in>*{opacity:1;transform:none}
+.rv-kids.in>:nth-child(2){transition-delay:80ms}.rv-kids.in>:nth-child(3){transition-delay:160ms}.rv-kids.in>:nth-child(4){transition-delay:240ms}.rv-kids.in>:nth-child(5){transition-delay:320ms}.rv-kids.in>:nth-child(6){transition-delay:400ms}.rv-kids.in>:nth-child(7){transition-delay:480ms}.rv-kids.in>:nth-child(8){transition-delay:560ms}
+@media (prefers-reduced-motion:reduce){html.js .rv,html.js .rv-kids>*{opacity:1;transform:none;transition:none}html.js .hero>*,html.js .stage-hero{animation:none}.v-skel i,.v-hint svg{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="https://atomicai.ch" aria-label="Atomic AI">Atomic Phone <small>by Atomic AI</small></a>
+    <nav aria-label="Page">
+      <a class="plain" href="#models">Models</a>
+      <a class="plain" href="#compare">Compare</a>
+      <a class="plain" href="#security">Atomic OS</a>
+      <a class="btn btn-fill" href="#reserve">Reserve</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ 1 · Hero ═══ -->
+<section class="hero" id="top">
+  <p class="eyebrow" id="hero-eyebrow">Atomic Phone One</p>
+  <h1 class="claim">Your phone. Not theirs.</h1>
+  <p class="sub" id="hero-sub">Titanium. 200 MP. Hardware kill switches. Atomic OS.</p>
+  <div class="cta">
+    <a class="btn btn-fill btn-lg" href="#reserve">Reserve</a>
+    <a class="btn btn-line btn-lg" href="#models">Explore</a>
+  </div>
+  <div class="stage stage-hero"><div class="v" id="v-hero"></div></div>
+</section>
+<div class="hero-notice"><div class="wrap"><b>Atomic Phone is in active development — the release date has not been finalized.</b> Reserving secures your place in line with a fully refundable deposit; you are not charged the full price today. Refund requests: <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a>.</div></div>
+
+<!-- ═══ 2 · Model picker ═══ -->
+<section class="section" id="models">
+  <div class="wrap">
+    <div class="rv-kids">
+      <p class="eyebrow">Three phones. One idea.</p>
+      <h2 class="claim-md">Pick your Atomic Phone.</h2>
+    </div>
+    <div class="models rv-kids" id="models-grid" role="group" aria-label="Choose model"></div>
+  </div>
+</section>
+<hr class="rule">
+
+<!-- ═══ 3 · Compare with ═══ -->
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="rv-kids">
+      <p class="eyebrow">By the numbers.</p>
+      <h2 class="claim-md" id="cmp-title">Atomic Phone One, up against anything.</h2>
+    </div>
+    <div class="cmp-head rv" style="margin-top:clamp(28px,4vw,48px)">
+      <span class="lbl">Compare with</span>
+      <span class="sel"><label class="sr" for="cmp-sel">Compare with</label><select id="cmp-sel"></select></span>
+    </div>
+    <div class="stats" id="stats"></div>
+    <p class="cmp-note rv"><i></i>Turquoise marks where the selected Atomic Phone is ahead. Prices in original currencies, no conversion applied. Competitor figures are published specs as of September 2026; Atomic figures are design targets for a phone in development.</p>
+  </div>
+</section>
+<hr class="rule">
+
+<!-- ═══ 4 · Colorway picker ═══ -->
+<section class="section" id="finish" style="padding-bottom:clamp(60px,8vw,110px)">
+  <div class="wrap rv-kids" style="text-align:center">
+    <p class="eyebrow" id="finish-eyebrow">Six finishes.</p>
+    <h2 class="claim-md">Pick a finish. Watch it change.</h2>
+  </div>
+  <div class="stage stage-color"><div class="v" id="v-color"></div></div>
+  <div class="wrap finish">
+    <div class="swatches" id="swatches" role="radiogroup" aria-label="Colorway"></div>
+    <div class="fname" id="fname"></div>
+  </div>
+</section>
+<hr class="rule">
+
+<!-- ═══ 5 · Feature stories (rendered from FEATURES) ═══ -->
+<div id="features"></div>
+
+<!-- ═══ 6 · Security / Atomic OS ═══ -->
+<section class="section sec" id="security">
+  <div class="wrap">
+    <div class="rv-kids">
+      <p class="eyebrow tq">Atomic OS</p>
+      <h2 class="claim">Built for hacking.</h2>
+      <p class="copy">The other flagships put security in a settings menu. Atomic Phone puts it in the hardware — physical switches, physical covers, an OS with the toolkit already inside, and nothing reporting back by default.</p>
+    </div>
+    <div class="sec-grid rv-kids">
+      <div class="sec-item"><div class="n">01</div><h3>Zero baseline data collection</h3><p>There is no telemetry to switch off, because none was built. <b>Architectural, not a toggle.</b> No analytics pipeline, no usage reporting, no quiet uploads.</p></div>
+      <div class="sec-item"><div class="n">02</div><h3>Verified boot</h3><p>Every stage of the boot chain is checked before it runs. If the software on the phone isn't what it should be, the phone doesn't start.</p></div>
+      <div class="sec-item"><div class="n">03</div><h3>Hardware kill switches</h3><p>Real switches on real circuits. <b>Each disconnect needs its own physical confirmation</b> — press it and the line is cut. No app, no dialog, no software in the loop.</p></div>
+      <div class="sec-item"><div class="n">04</div><h3>A pentesting toolkit, pre-installed</h3><p>Atomic OS is a heavily re-skinned Android fork with a <b>full NetHunter-style toolkit built in</b>, running Atomic's own black-and-turquoise terminal-style interface. Zero visible Android branding, anywhere.</p></div>
+      <div class="sec-item"><div class="n">05</div><h3>Three removable covers</h3><p><b>Camera, mic, radio</b> — each has a physical, removable plug/cover point on the back. Pull it and that part is physically disconnected. Not muted. Not disabled. Disconnected.</p></div>
+      <div class="sec-item"><div class="n">06</div><h3>Pay your way</h3><p>Google Wallet works out of the box — <b>double-press the power button</b>. Want nothing Google on the device? An optional de-Googled mode turns it fully off.</p></div>
+    </div>
+    <div class="term rv" aria-hidden="true">
+      <div class="term-top"><span>atomic os · terminal</span><span>radio <b id="t-radio">—</b> · cam <b id="t-cam">—</b> · mic <b id="t-mic">—</b></span></div>
+      <div class="term-body" id="term"></div>
+    </div>
+    <p class="gut rv">Neither the iPhone 18 Pro Max nor the Galaxy S26 Ultra has a single hardware kill switch, a removable camera cover, or a built-in pentesting OS. <b>Atomic Phone has all three.</b></p>
+  </div>
+</section>
+<hr class="rule">
+
+<!-- ═══ 7 · Comparison table ═══ -->
+<section class="section" id="versus">
+  <div class="wrap">
+    <div class="rv-kids">
+      <p class="eyebrow">Versus the flagships.</p>
+      <h2 class="claim-md">Same chip class. Same display class. Then it diverges.</h2>
+    </div>
+    <div class="tbl-wrap rv"><table class="tbl" id="tbl"></table></div>
+    <p class="tbl-note rv">Turquoise = Atomic ahead outright · white = roughly at parity · muted = not offered. Prices shown in original currencies without conversion. iPhone 18 Pro Max battery is the eSIM-only model. Competitor specs paraphrased from published spec sheets; trademarks belong to their owners.</p>
+  </div>
+</section>
+<hr class="rule">
+
+<!-- ═══ 8 · Reserve ═══ -->
+<section class="section" id="reserve">
+  <div class="wrap">
+    <div class="rv-kids">
+      <p class="eyebrow">Reserve.</p>
+      <h2 class="claim-md">Hold your place. Pay a deposit, not a phone.</h2>
+      <p class="copy">Configure it the way you want it. Today you only pay a small, fully refundable deposit — the full price is shown so you know what to expect, not charged.</p>
+    </div>
+    <div class="banner" id="banner"></div>
+    <div class="res">
+      <div class="rv-kids">
+        <div class="step"><div class="step-h"><span class="n">01</span><h3>Model</h3><span class="sel-v" id="sv-model"></span></div><div class="opts c3" id="o-model" role="radiogroup" aria-label="Model"></div></div>
+        <div class="step"><div class="step-h"><span class="n">02</span><h3>Colorway</h3><span class="sel-v" id="sv-cw"></span></div><div class="opts c3" id="o-cw" role="radiogroup" aria-label="Colorway"></div></div>
+        <div class="step"><div class="step-h"><span class="n">03</span><h3>Storage</h3><span class="sel-v" id="sv-st"></span></div><div class="opts c4" id="o-st" role="radiogroup" aria-label="Storage"></div></div>
+        <div class="disclose"><b>Atomic Phone is in active development. Release date has not been finalized yet.</b> Reserving your phone secures your place in line with a fully refundable deposit — you are not charged the full price today. Deposits are fully refundable. To request a refund, contact <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a>.</div>
+      </div>
+      <aside class="side rv">
+        <div class="summary">
+          <div class="v" id="v-sum"></div>
+          <div class="sum-body">
+            <h3 id="s-title">Atomic Phone One</h3>
+            <div class="cfg" id="s-cfg"></div>
+            <div class="rows">
+              <div class="row"><span>Expected retail price</span><b id="s-price"></b></div>
+              <div class="row dep"><span>Refundable deposit today</span><b id="s-dep"></b></div>
+              <div class="row"><span>Charged today</span><b id="s-today"></b></div>
+            </div>
+            <div class="disclose"><b>In development · release date TBD.</b> Your deposit of <b id="s-dep2"></b> holds your place in line and is fully refundable. You are not charged the expected retail price today. To request a refund, contact <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a>.</div>
+            <button type="button" class="btn btn-fill btn-lg" id="btn-reserve">Reserve</button>
+            <div class="err" id="err" role="alert"></div>
+            <p class="fine">Secure checkout by Stripe · CHF. By reserving you acknowledge the phone is not yet released and that the deposit is refundable on request via <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a>.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 9 · Footer ═══ -->
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot-note"><b>Release date TBD.</b> Atomic Phone is in active development and the release date has not been finalized. Reservations are a fully refundable deposit, not a purchase — you are not charged the full price today. <b>Questions or refund requests: <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a></b></p>
+    <div class="foot-grid">
+      <div class="foot-brand"><a class="brand" href="https://atomicai.ch">Atomic Phone</a><p>Hardware from Atomic AI — the hands-on cybersecurity training platform with an AI mentor, built by Pavlopanda. Atomic Phone runs Atomic OS.</p></div>
+      <div><h4>Phone</h4><ul><li><a href="#models">Models</a></li><li><a href="#compare">Compare</a></li><li><a href="#finish">Finishes</a></li><li><a href="#security">Atomic OS</a></li><li><a href="#versus">Versus</a></li><li><a href="#reserve">Reserve</a></li></ul></div>
+      <div><h4>Atomic AI</h4><ul><li><a href="https://atomicai.ch">atomicai.ch</a></li><li><a href="https://atomicai.ch/#lp-how">How it works</a></li><li><a href="https://atomicai.ch/#lp-pricing">Platform pricing</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a></li><li><a href="mailto:pavlo@atomicai.ch?subject=Atomic%20Phone%20refund%20request">Refund request</a></li><li><a href="https://discord.gg/BGH4Qd4Xs" target="_blank" rel="noopener noreferrer">Discord</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© <span id="year">2026</span> Atomic AI · Pavlopanda</span><span>Deposits fully refundable · release date TBD · pavlo@atomicai.ch</span></div>
+  </div>
+</footer>
+
+<div class="pill" id="pill" aria-live="polite"><div class="t"><b id="pill-name">Atomic Phone One</b><span id="pill-price">From CHF 1,299 · deposit CHF 50</span></div><a class="btn btn-fill" href="#reserve">Reserve</a></div>
+
+<script>
+(function () {
+'use strict';
+document.documentElement.classList.add('js');
+
+/* ── config ─────────────────────────────────────────────────────────── */
+const RESERVE_API = '/api/reserve';
+const ASSET_V = '2';
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SMALL = matchMedia('(max-width: 640px)').matches;
+const MODEL_DIR = SMALL ? 'models/m/' : 'models/';
+const CHF = n => 'CHF ' + n.toLocaleString('en-US');
+const GB = g => g >= 1024 ? (g / 1024) + ' TB' : g + ' GB';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* Product colours (real, from the textures) — used only for swatches and to name the finish. */
+const COLORWAYS = {
+  'black-turquoise': { name: 'Black / Turquoise', base: '#1b1e22', accent: '#03fcec' },
+  'white-pink':      { name: 'White / Pink',      base: '#eef0f2', accent: '#ff0080' },
+  'white-black':     { name: 'White / Black',     base: '#eef0f2', accent: '#202326' },
+  'black-white':     { name: 'Black / White',     base: '#0f1114', accent: '#f2f4f6' },
+  'black-red':       { name: 'Black / Red',       base: '#1b1e22', accent: '#c2121f' },
+  'gold-green':      { name: 'Gold / Green',      short: 'Gold / Green · Limited', base: '#1d3b2b', accent: '#c8a24a', ltd: true, file: 'green-gold' },   // newest designer export: dark-green body, gold traces (one-green-gold.glb). The earlier gold-body export is kept on disk as one-gold-green.glb.
+};
+const MODELS = {
+  one: { id: 'one', name: 'Atomic Phone One', short: 'One', file: 'one', height: 1.562,
+    line: 'The flagship. Titanium. 200 MP.', body: 'Full size · titanium', dims: '74.7 × 156.2 × 9 mm', frame: 'Titanium', lenses: 3,
+    storage: [256, 512, 1024, 2048], prices: { 256: 1299, 512: 1399, 1024: 1499, 2048: 1599 },
+    colorways: ['black-turquoise', 'white-pink', 'white-black', 'black-white', 'black-red', 'gold-green'],
+    deposit: 50, depositPriceId: 'price_1U78rwEhCuxRDC5VSedpTjPz' },
+  s: { id: 's', name: 'Atomic Phone One S', short: 'One S', file: 'one-s', height: 1.562,
+    line: 'Same size. Aluminum. Lighter, for less.', body: 'Full size · aluminum', dims: '74.7 × 156.2 × 9 mm', frame: 'Aluminum', lenses: 2,
+    storage: [128, 256, 512, 1024], prices: { 128: 899, 256: 949, 512: 999, 1024: 1099 },
+    colorways: ['black-turquoise', 'white-black', 'white-pink'],
+    deposit: 35, depositPriceId: 'price_1U78unEhCuxRDC5Vu8cElw4k' },
+  xs: { id: 'xs', name: 'Atomic Phone One XS', short: 'One XS', file: 'one-xs', height: 1.41,
+    line: 'Compact. Aluminum. One hand.', body: 'Compact · aluminum', dims: '67 × 141 × 8.5 mm', frame: 'Aluminum', lenses: 2,
+    storage: [128, 256, 512], prices: { 128: 599, 256: 699, 512: 799 },
+    colorways: ['black-turquoise', 'white-black', 'white-pink'],
+    deposit: 25, depositPriceId: 'price_1UEAhlEhCuxRDC5ViWumXN7a' },
+};
+const ORDER = ['one', 's', 'xs'];
+const glb = (m, cw) => `${MODEL_DIR}${MODELS[m].file}-${COLORWAYS[cw].file || cw}.glb?v=${ASSET_V}`;
+const poster = (m, cw) => `posters/${MODELS[m].file}-${COLORWAYS[cw].file || cw}.webp?v=${ASSET_V}`;
+const from = m => MODELS[m].prices[MODELS[m].storage[0]];
+
+/* Reference only — full-price SKU IDs. Checkout uses the three deposit IDs above, server-side. */
+const SKU_PRICE_IDS = {
+  one: { 'black-turquoise': { 256: 'price_1UEAuaEhCuxRDC5VpjR29J1j', 512: 'price_1UEAwVEhCuxRDC5VTuDK64R4', 1024: 'price_1UEB1AEhCuxRDC5V2dL0ttO1', 2048: 'price_1UEB1rEhCuxRDC5Viw0LPIkA' }, 'white-pink': { 256: 'price_1UECyyEhCuxRDC5VudE2DpnM', 512: 'price_1UECzxEhCuxRDC5VHALenvCC', 1024: 'price_1UED0lEhCuxRDC5VyDOOs3xc', 2048: 'price_1UED1fEhCuxRDC5VvpB3r3tm' }, 'white-black': { 256: 'price_1UED2YEhCuxRDC5VQHiTsfw3', 512: 'price_1UED3QEhCuxRDC5VszOT6a8P', 1024: 'price_1UED4lEhCuxRDC5VtdaxVBB0', 2048: 'price_1UED6fEhCuxRDC5VbEWJ5jyS' }, 'black-white': { 256: 'price_1UED7gEhCuxRDC5VwPMFRRR5', 512: 'price_1UED8gEhCuxRDC5VUg0gOud3', 1024: 'price_1UED9eEhCuxRDC5Vx9U6bG52', 2048: 'price_1UEDAdEhCuxRDC5VIoWZ6CPC' }, 'black-red': { 256: 'price_1UEDBdEhCuxRDC5VtgMzIq48', 512: 'price_1UEDCbEhCuxRDC5VcdmyLAxC', 1024: 'price_1UEDDdEhCuxRDC5VbXEYHshZ', 2048: 'price_1UEDHAEhCuxRDC5VBI1JYXxn' }, 'gold-green': { 256: 'price_1UEDIEEhCuxRDC5VhpwgyEbN', 512: 'price_1UEDJCEhCuxRDC5VHDFkRXpi', 1024: 'price_1UEDKLEhCuxRDC5VDAU3GVVN', 2048: 'price_1UEDLQEhCuxRDC5VTI3yQzW5' } },
+  s: { 'black-turquoise': { 128: 'price_1UEDMTEhCuxRDC5Vk38Uzzzm', 256: 'price_1UEDNXEhCuxRDC5Vt2tuZK3r', 512: 'price_1UEDOVEhCuxRDC5VeKXNqTCl', 1024: 'price_1UEDfGEhCuxRDC5VvSMYgEW3' }, 'white-black': { 128: 'price_1UEDgDEhCuxRDC5VPztAWLAH', 256: 'price_1UEDhLEhCuxRDC5VDQYkiFMw', 512: 'price_1UEDiKEhCuxRDC5VUm6viqWE', 1024: 'price_1UEDjNEhCuxRDC5VhZSFXgCA' }, 'white-pink': { 128: 'price_1UEDk8EhCuxRDC5V0x4SLyxf', 256: 'price_1UEDl5EhCuxRDC5VmQnIOXE5', 512: 'price_1UEDm8EhCuxRDC5VXaE4ol0m', 1024: 'price_1UEDn8EhCuxRDC5VbnloDjvk' } },
+  xs: { 'black-turquoise': { 128: 'price_1UEDxxEhCuxRDC5Vh5G1WKsr', 256: 'price_1UEDyeEhCuxRDC5Vb6eGqGGT', 512: 'price_1UEDzLEhCuxRDC5VVgKi0owt' }, 'white-black': { 128: 'price_1UEE00EhCuxRDC5V9RCxxS2I', 256: 'price_1UEE0gEhCuxRDC5VKk0T92gh', 512: 'price_1UEE1ZEhCuxRDC5V5vrjyEQn' }, 'white-pink': { 128: 'price_1UEE2KEhCuxRDC5Vciuxdel1', 256: 'price_1UEP61EhCuxRDC5VZHrCLVtJ', 512: 'price_1UEPB0EhCuxRDC5VLtAYn0sz' } },
+};
+
+/* Compare-with data. Competitor numbers: GSMArena / SamMobile / BGR, September 2026. */
+const DEVICES = {
+  one:    { name: 'Atomic Phone One',    refresh: 144, sensor: 200,  storage: 2048, lenses: 3, disconnects: 3, frame: 'Titanium', battery: 4685, price: 'CHF 1,299', priceNum: 1299 },
+  s:      { name: 'Atomic Phone One S',  refresh: 144, sensor: null, storage: 1024, lenses: 2, disconnects: 3, frame: 'Aluminum', battery: 4685, price: 'CHF 899',   priceNum: 899 },
+  xs:     { name: 'Atomic Phone One XS', refresh: 144, sensor: null, storage: 512,  lenses: 2, disconnects: 3, frame: 'Aluminum', battery: 4685, price: 'CHF 599',   priceNum: 599 },
+  iphone: { name: 'iPhone 18 Pro Max',   refresh: 120, sensor: 48,   storage: 2048, lenses: 3, disconnects: 0, frame: 'Aluminum', battery: 5567, price: '$1,299',    priceNum: 1299 },
+  galaxy: { name: 'Galaxy S26 Ultra',    refresh: 120, sensor: 200,  storage: 1024, lenses: 4, disconnects: 0, frame: 'Aluminum', battery: 5000, price: '$1,299.99', priceNum: 1299.99 },
+};
+const STAT_ROWS = [
+  { big: d => d.refresh + ' Hz', pre: 'Up to', lab: 'display refresh rate', win: (a, b) => a.refresh > b.refresh },
+  { big: d => d.sensor ? d.sensor + ' MP' : 'TBA', lab: 'main sensor resolution', win: (a, b) => !!a.sensor && (!b.sensor || a.sensor > b.sensor), sub: a => a.sensor ? '' : 'Not yet announced for this model' },
+  { big: d => GB(d.storage), pre: 'Up to', lab: 'storage', win: (a, b) => a.storage > b.storage },
+  { big: d => String(d.disconnects), lab: 'physical disconnects — camera, mic, radio', win: (a, b) => a.disconnects > b.disconnects },
+  { big: d => d.frame, lab: 'frame', win: (a, b) => a.frame === 'Titanium' && b.frame !== 'Titanium' },
+  { big: d => d.battery.toLocaleString('en-US') + ' mAh', lab: 'battery — same capacity class', win: (a, b) => a.battery > b.battery },
+  { big: d => String(d.lenses), lab: 'rear lenses', win: () => false },
+  { big: d => d.price, pre: 'From', lab: 'starting price', win: (a, b) => a.priceNum < b.priceNum * (b.price.startsWith('$') ? 0.75 : 1), sub: () => 'Original currencies, no conversion' },   // vs USD prices, only a clear gap (>25%) counts as a win — never a mixed-currency rounding difference
+];
+
+/* Feature stories — each with a macro framing of the live model. θ 0 = screen, 180 = back; targets are fractions of model height. */
+const FEATURES = [
+  { id: 'chip', eyebrow: 'Chip', view: { orbit: '168deg 58deg 1.45m', ty: .74 },
+    claim: 'Elite silicon. Kept cold.',
+    copy: m => ['<b>Snapdragon 8 Elite Gen 5</b> — the same chip class as this year\'s Galaxy flagship. A <b>vapor chamber</b> spreads the heat so performance holds when you\'re running a scan and a build at once, instead of falling off a cliff.'],
+    keys: m => [['Snapdragon 8 Elite Gen 5', 'Processor'], ['Vapor chamber', 'Cooling — sustained performance under load']] },
+  { id: 'display', eyebrow: 'Display', view: { orbit: '-8deg 86deg 1.35m', ty: .56 },
+    claim: '144 times a second.',
+    copy: m => ['A <b>144 Hz OLED</b> — past the 120 Hz ceiling of the newest iPhone and Galaxy. The reinforced cover glass is <b>engineered to resist scratches and everyday wear</b>, with an oleophobic coating so fingerprints wipe away instead of smearing.'],
+    keys: m => [['144 Hz', 'OLED refresh rate'], ['Reinforced glass', 'Scratch-resistant, oleophobic coating']] },
+  { id: 'battery', eyebrow: 'Battery', view: { orbit: '92deg 88deg 1.05m', ty: .5 },
+    claim: m => `All day. All ${m.id === 'xs' ? '8.5' : '9'} millimetres of it.`,
+    copy: m => ['<b>4,685 mAh</b> in a body about 9 mm thin — battery capacity <b>in the same class as the newest iPhone and Galaxy flagships</b>. The point isn\'t a bigger number. It\'s efficiency, and a phone that stays thin.'],
+    keys: m => [['4,685 mAh', 'Capacity'], [m.id === 'xs' ? '8.5 mm' : '9 mm', 'Thickness'], ['Flagship class', 'Same capacity class as iPhone 18 Pro Max and Galaxy S26 Ultra']] },
+  { id: 'body', eyebrow: 'Body', view: { orbit: '-42deg 68deg 1.1m', ty: .9 },
+    claim: m => m.id === 'one' ? 'Titanium, cut to fit a hand.' : m.id === 's' ? 'The same body. In aluminum.' : 'Smaller. Lighter. All there.',
+    copy: m => [m.id === 'one' ? '<b>74.7 × 156.2 mm, 9 mm thin, titanium.</b> The full-size flagship build.' : m.id === 's' ? '<b>The same 74.7 × 156.2 × 9 mm footprint as the One</b>, in aluminum instead of titanium — lighter in the hand, lighter on the price.' : '<b>67 × 141 × 8.5 mm, aluminum.</b> Noticeably smaller and lighter than the One and One S. Built to be used with one hand.',
+      'Footprint and corner curves are modeled on the iPhone Air. The base material is matte black; the second colour in every colorway name is the circuit-trace accent on the back. A <b>reinforced unibody frame</b>, built and tested to survive real daily use — pockets, drops, scratches.'],
+    keys: m => [[m.dims, 'Dimensions'], [m.frame, 'Frame'], ['Reinforced unibody', 'Tested for drops and daily wear']] },
+  { id: 'cameras', eyebrow: 'Cameras', view: { orbit: '-158deg 72deg 1.25m', ty: .82 },
+    claim: m => m.id === 'one' ? '200 megapixels of main sensor.' : 'Two lenses. The same bump. On purpose.',
+    copy: m => [m.id === 'one' ? '<b>Ultrawide, a 200 MP main sensor, and a periscope zoom</b>, in a vertical oval bump. Flash, mic and sensor sit in a vertical line beneath the lenses.' : m.id === 's' ? '<b>Two lenses — ultrawide and main — no periscope.</b> The bump is the same physical size as the One\'s, so the silhouette and the cases stay identical. Flash, mic and sensor sit in a vertical line beneath the lenses.' : '<b>Two lenses — ultrawide and main — no periscope.</b> The bump is deliberately sized to match the One S. It is <b>not</b> shrunk for the smaller phone, and that\'s a choice, not a downgrade. Flash, mic and sensor sit in a vertical line beneath the lenses.'],
+    callout: m => m.id === 'one' ? '<b>200 MP vs 48 MP.</b> The One\'s main sensor sits in the same 200 MP resolution class as the Galaxy S26 Ultra\'s — and outresolves the iPhone 18 Pro Max\'s 48 MP main sensor outright.' : 'Want the 200 MP main sensor and the periscope? That\'s the <b>Atomic Phone One</b>.',
+    keys: m => [[m.lenses + ' lenses', m.id === 'one' ? 'Ultrawide · 200 MP main · periscope zoom' : 'Ultrawide · main'], ['Vertical oval', 'Camera bump'], ['Flash · mic · sensor', 'In a line below the lenses']] },
+  { id: 'back', eyebrow: 'Back panel', view: { orbit: '172deg 86deg 1.55m', ty: .55 },
+    claim: 'Your scan, on the back.',
+    copy: m => ['An <b>always-on OLED strip</b> shows your notification count, <b>live nmap scan progress</b> and battery percentage. No other phone on the market shows you a live network scan on the back of the phone.',
+      `A circuit-trace pattern in the colorway's accent runs across the whole panel, with the <b>${m.name}</b> wordmark at the bottom in the same accent. Below the strip, a <b>hinged flip hatch</b> covers roughly the bottom half of the back, opens outward from the bottom edge, and exposes <b>GPIO pins and antenna access</b> — on all three models. Neither iPhone nor Galaxy lets you open the phone and reach anything.`],
+    keys: m => [['Always-on OLED', 'Notifications · live nmap % · battery %'], ['Flip hatch', 'GPIO pins + antenna access, all models'], ['Circuit traces', 'In the colorway accent']] },
+  { id: 'buttons', eyebrow: 'Buttons', view: { orbit: '128deg 82deg 1.05m', ty: .62 }, alt: { orbit: '-124deg 82deg 1.15m', ty: .68 },
+    claim: 'A kill switch, where you\'d expect a shutter.',
+    copy: m => ['<b>Right side:</b> a power button positioned like an iPhone\'s — higher, plain textured, no colour — and below it, after a clear gap, a <b>turquoise ridged kill-switch button</b> where an iPhone\'s Camera Control sits. Both physically protrude with a grooved texture for grip, elongated in proportion to the phone.',
+      '<b>Left side:</b> a turquoise slide-mute switch at the top, two separate volume buttons in the middle, and the SIM tray at the bottom.'],
+    keys: m => [['Kill switch', 'Right side, lower — turquoise, ridged'], ['Power', 'Right side, higher — plain, textured'], ['Mute · volume · SIM', 'Left side, top to bottom']] },
+  { id: 'bottom', eyebrow: 'Bottom edge', view: { orbit: '8deg 165deg .62m', ty: .03 },
+    claim: 'Symmetry, from the bottom up.',
+    copy: m => ['A <b>12-hole speaker grille</b> on one side, a <b>centred USB-C port</b>, and a <b>3-hole microphone cluster</b> on the other. Deliberate, balanced, and nothing to hunt for in the dark.'],
+    keys: m => [['USB-C', 'Centred'], ['12 holes', 'Speaker grille'], ['3 holes', 'Microphone cluster']] },
+];
+
+/* ── state ──────────────────────────────────────────────────────────── */
+const state = { model: 'one', cw: 'black-turquoise', storage: 256, cmp: 'iphone', side: 'right' };
+const HOME = { orbit: '-152deg 80deg auto', target: 'auto auto auto' };
+
+/* ── viewer ─────────────────────────────────────────────────────────── */
+let hintDone = false, glOK = null;
+const hasGL = () => { if (glOK === null) { try { const c = document.createElement('canvas'); glOK = !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { glOK = false; } } return glOK; };
+class Viewer {
+  constructor(root, o) {
+    this.root = root; this.o = o; this.first = true; this.pending = null; this.home = null;
+    root.innerHTML = `<div class="v-skel"><i></i><div class="v-prog"><b></b></div></div>
+      <model-viewer alt="${o.alt}" loading="eager" reveal="auto" ${o.interactive ? 'camera-controls touch-action="pan-y"' : ''} ${o.spin && !REDUCED ? 'auto-rotate' : ''} auto-rotate-delay="3000" rotation-per-second="12deg"
+        interaction-prompt="none" interpolation-decay="${o.decay || 180}" environment-image="env/atomic-studio.hdr" exposure="1.35" tone-mapping="aces" shadow-intensity="1.1" shadow-softness="0.9"
+        min-camera-orbit="-Infinity 0deg 0.4m" max-camera-orbit="Infinity 180deg 7m" min-field-of-view="10deg" max-field-of-view="45deg"
+        camera-orbit="${o.view.orbit}" camera-target="${o.view.target}"></model-viewer>
+      <div class="v-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Drag to rotate · ${SMALL ? 'pinch' : 'scroll'} to zoom</div>
+      <button type="button" class="v-reset" aria-label="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Reset view</button>
+      <div class="v-na">3D needs WebGL, which this browser has turned off. The still shows the current finish.</div>`;
+    this.mv = $('model-viewer', root); this.skel = $('.v-skel', root); this.bar = $('.v-prog b', root); this.hint = $('.v-hint', root);
+    if (!hasGL()) root.classList.add('na');
+    if (!o.interactive) root.classList.add('fixed');            // pinned framing: no drag, no zoom, no reset control
+    $('.v-reset', root).addEventListener('click', () => this.reset(true));
+    this.mv.addEventListener('progress', e => { this.bar.style.width = (e.detail.totalProgress * 100).toFixed(0) + '%'; });
+    this.mv.addEventListener('load', () => this.onLoad());
+    this.mv.addEventListener('error', e => { console.warn('model-viewer error', e.detail); this.skel.classList.add('off'); });
+    this.mv.addEventListener('camera-change', e => { if (e.detail.source === 'user-interaction') this.dismissHint(); });
+  }
+  cam() { const o = this.mv.getCameraOrbit(), t = this.mv.getCameraTarget(); return { orbit: `${o.theta}rad ${o.phi}rad ${o.radius}m`, target: `${t.x}m ${t.y}m ${t.z}m`, fov: `${this.mv.getFieldOfView()}deg` }; }
+  apply(c) { this.mv.cameraOrbit = c.orbit; this.mv.cameraTarget = c.target; if (c.fov) this.mv.fieldOfView = c.fov; }
+  onLoad() {
+    this.root.classList.add('ready');
+    if (this.pending) { this.apply(this.pending); this.mv.jumpCameraToGoal(); this.pending = null; }
+    else { this.mv.jumpCameraToGoal(); this.home = this.cam(); }
+    setTimeout(() => this.skel.classList.add('off'), 100);
+    if (this.first) { this.first = false; this.showHint(); this.o.onFirst && this.o.onFirst(this); }
+  }
+  showHint() { if (hintDone || REDUCED || !this.o.hint) return; hintDone = true; this.hint.classList.add('on'); this.hintT = setTimeout(() => this.dismissHint(), 4500); }
+  dismissHint() { clearTimeout(this.hintT); this.hint.classList.remove('on'); }
+  /* Swap the GLB. keep=true retains the user's orbit/zoom/target/FOV exactly; the previous model stays on screen until the next is decoded. */
+  set(model, cw, keep = true) {
+    const src = glb(model, cw); if (this.mv.src === src) return;
+    this.mv.setAttribute('poster', poster(model, cw));
+    this.mv.alt = `${MODELS[model].name} in ${COLORWAYS[cw].name} — ${this.o.interactive ? 'interactive 3D model, drag to rotate' : '3D model, fixed view'}`;
+    if (!this.first && keep) { const c = this.cam(); this.apply(c); this.pending = c; }
+    else { this.pending = null; this.home = null; this.apply(this.o.view); if (this.first) this.skel.classList.remove('off'); }
+    this.mv.src = src;
+  }
+  setView(view) { this.o.view = view; this.home = null; this.apply(view); }
+  reset(fromUser) { this.mv.resetTurntableRotation && this.mv.resetTurntableRotation(0); this.apply(this.home || this.o.view); if (fromUser && this.o.spin && !REDUCED) this.mv.autoRotate = true; }
+}
+const V = {};
+function mount(key, root, o) { const v = new Viewer(root, o); V[key] = v; v.set(state.model, state.cw, false); return v; }
+function lazy(key, root, o, margin = 1000) {
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); mount(key, root, o); } }, { rootMargin: `${margin}px 0px` });
+  io.observe(root);
+}
+function featView(f, m, side) { const v = side === 'left' && f.alt ? f.alt : f.view; const k = m.height / 1.562; return { orbit: v.orbit.replace(/([\d.]+)m/, (_, r) => (parseFloat(r) * k).toFixed(3) + 'm'), target: `0m ${(v.ty * m.height).toFixed(3)}m 0m` }; }
+
+/* ── render ─────────────────────────────────────────────────────────── */
+function swatch(cw, checked, span) {
+  const c = COLORWAYS[cw];
+  const inner = `<i style="--base:${c.base};--accent:${c.accent}"></i>${c.ltd ? '<span class="ltd">LTD</span>' : ''}`;
+  return span ? `<span class="sw" aria-hidden="true">${inner}</span>` : `<button type="button" class="sw" role="radio" aria-checked="${checked}" data-cw="${cw}" aria-label="${c.name}" title="${c.name}">${inner}</button>`;
+}
+function renderTop() {
+  const m = MODELS[state.model];
+  $('#hero-eyebrow').textContent = m.name;
+  $('#hero-sub').textContent = m.id === 'one' ? 'Titanium. 200 MP. Hardware kill switches. Atomic OS.' : m.id === 's' ? 'Aluminum. Two lenses. Hardware kill switches. Atomic OS.' : 'Compact aluminum. Two lenses. Hardware kill switches. Atomic OS.';
+  $('#pill-name').textContent = m.name; $('#pill-price').textContent = `From ${CHF(from(m.id))} · deposit ${CHF(m.deposit)}`;
+  $('#cmp-title').textContent = `${m.name}, up against anything.`;
+  $('#finish-eyebrow').textContent = `${['', '', 'Two', 'Three', 'Four', 'Five', 'Six'][m.colorways.length]} finishes${m.id === 'one' ? '. One of them is limited.' : '.'}`;
+}
+function renderModels() {
+  $('#models-grid').innerHTML = ORDER.map(id => { const m = MODELS[id]; return `<button type="button" class="model" data-model="${id}" aria-pressed="${state.model === id}"><div class="name">${m.short}</div><div class="meta"><b>${m.line}</b>${m.body} · ${m.lenses} lenses<br><span class="tq">From ${CHF(from(id))}</span> · deposit ${CHF(m.deposit)}</div></button>`; }).join('');
+}
+function renderCompare() {
+  const sel = $('#cmp-sel'); const opts = [...ORDER.filter(x => x !== state.model), 'iphone', 'galaxy'];
+  if (!opts.includes(state.cmp)) state.cmp = 'iphone';
+  sel.innerHTML = opts.map(k => `<option value="${k}" ${state.cmp === k ? 'selected' : ''}>${DEVICES[k].name}</option>`).join('');
+  const a = DEVICES[state.model], b = DEVICES[state.cmp];
+  $('#stats').innerHTML = STAT_ROWS.map(r => { const win = r.win(a, b); const sub = r.sub ? r.sub(a) : ''; const val = r.big(a); return `<div class="stat"><div><div class="big${win ? ' win' : ''}${val.length > 8 ? ' long' : ''}">${r.pre ? `<small>${r.pre}</small>` : ''}${r.big(a)}</div><div class="lab">${r.lab}</div></div><div class="vs">${b.name}: <b>${r.big(b)}</b>${sub ? `<br>${sub}` : ''}</div></div>`; }).join('');
+}
+function renderFinish() {
+  const m = MODELS[state.model];
+  $('#swatches').innerHTML = m.colorways.map(cw => swatch(cw, cw === state.cw)).join('');
+  $('#fname').innerHTML = `${COLORWAYS[state.cw].short || COLORWAYS[state.cw].name}<small>${COLORWAYS[state.cw].ltd ? 'Limited edition. Dark-green body, gold circuit-trace accent.' : 'The circuit-trace accent on the back, and the coloured buttons, take the second colour.'}</small>`;
+}
+function renderFeatures() {
+  const m = MODELS[state.model];
+  $('#features').innerHTML = FEATURES.map((f, i) => `<section class="feat" id="f-${f.id}">
+    <div class="macro"><div class="v" data-feat="${f.id}"></div></div>
+    <div class="wrap feat-text rv-kids">
+      <p class="eyebrow">${f.eyebrow}</p>
+      <h2 class="claim-md">${typeof f.claim === 'function' ? f.claim(m) : f.claim}</h2>
+      ${f.copy(m).map(c => `<p class="copy">${c}</p>`).join('')}
+      ${f.callout ? `<div class="callout">${f.callout(m)}</div>` : ''}
+      ${f.alt ? `<div class="sides" role="group" aria-label="Show side"><button type="button" data-side="right" aria-pressed="${state.side === 'right'}">Right · kill switch</button><button type="button" data-side="left" aria-pressed="${state.side === 'left'}">Left · mute &amp; volume</button></div>` : ''}
+      <div class="keys">${f.keys(m).map(([b, s]) => `<div class="key"><b>${b}</b><span>${s}</span></div>`).join('')}</div>
+    </div>
+  </section><hr class="rule">`).join('');
+  for (const f of FEATURES) {
+    lazy('f-' + f.id, $(`.v[data-feat="${f.id}"]`), { alt: `${m.name} — ${f.eyebrow} close-up, 3D`, spin: false, hint: false, interactive: false, decay: 220, view: featView(f, m, f.alt ? state.side : 'right') }, 650);
+  }
+  observe($$('#features .rv, #features .rv-kids'));
+}
+function updateFeatureText() {
+  const m = MODELS[state.model];
+  $$('#features .feat').forEach((sec, i) => { const f = FEATURES[i]; $('h2', sec).innerHTML = typeof f.claim === 'function' ? f.claim(m) : f.claim; const c = f.copy(m); $$('.copy', sec).forEach((p, j) => p.innerHTML = c[j] || ''); const co = $('.callout', sec); if (co) co.innerHTML = f.callout(m); $('.keys', sec).innerHTML = f.keys(m).map(([b, s]) => `<div class="key"><b>${b}</b><span>${s}</span></div>`).join(''); });
+}
+function renderTable() {
+  const W = (t, s) => `<span class="win">${t}</span>${s ? `<small>${s}</small>` : ''}`, P = (t, s) => `<span class="par">${t}</span>${s ? `<small>${s}</small>` : ''}`, N = t => `<span class="no">— ${t}</span>`, T = (t, s) => `${t}${s ? `<small>${s}</small>` : ''}`;
+  const rows = [
+    ['Starting price', W('CHF 599 · One XS', 'One S from CHF 899 · One from CHF 1,299'), T('$1,299', 'USD'), T('$1,299.99', 'USD')],
+    ['Chip', P('Snapdragon 8 Elite Gen 5', 'Vapor chamber cooling'), T('A20 Pro', '2 nm'), T('Snapdragon 8 Elite Gen 5 for Galaxy', 'Same chip family')],
+    ['Display', W('144 Hz OLED', 'Scratch-resistant, oleophobic cover glass'), T('6.9″ Super Retina XDR OLED', 'ProMotion, adaptive to 120 Hz'), T('6.9″ Dynamic AMOLED 2X', '120 Hz')],
+    ['Battery', P('4,685 mAh', 'Same capacity class · ~9 mm thin'), T('5,567 mAh', 'eSIM-only model'), T('5,000 mAh', '60 W wired')],
+    ['Main camera', W('200 MP · One', 'Matches Galaxy\'s class; outresolves iPhone\'s 48 MP'), T('48 MP', 'Variable aperture ƒ/1.48–ƒ/4.0'), T('200 MP', '')],
+    ['Rear cameras', T('3 lenses · One', 'Ultrawide · 200 MP main · periscope zoom. One S / XS: 2 lenses'), T('Triple 48 MP', '0.5×–8× optical-quality zoom'), T('Quad camera', '200 MP main')],
+    ['Storage', P('Up to 2 TB', 'One 256 GB–2 TB · S 128 GB–1 TB · XS 128–512 GB'), T('Up to 2 TB', '12 GB RAM'), T('Up to 1 TB', '12–16 GB RAM')],
+    ['Front glass', T('Reinforced, scratch-resistant, oleophobic', 'Design target'), T('Ceramic Shield 2', ''), T('Corning Gorilla Armor 2', '')],
+    ['Frame', T('Titanium · One / Aluminum · S, XS', ''), T('Aluminum unibody', ''), T('Armor Aluminum', '')],
+    ['Operating system', W('Atomic OS', 'Re-skinned Android fork · terminal-style UI · zero visible Android branding'), T('iOS', 'Closed'), T('One UI / Android', 'Closed')],
+    ['Hardware kill switches', W('Yes — physical, per-disconnect confirmation', ''), N('None'), N('None')],
+    ['Removable camera / mic / radio covers', W('Yes — 3 physical plug/cover points', 'Full physical disconnect'), N('None'), N('None')],
+    ['Baseline data collection', W('Zero — architectural', ''), N('Not zero by default'), N('Not zero by default')],
+    ['Built-in pentesting toolkit', W('Yes — NetHunter-style, pre-installed', ''), N('No'), N('No')],
+    ['Open hatch / GPIO access', W('Bottom flip hatch — GPIO pins + antenna', 'All three models'), N('No user-accessible internals'), N('No user-accessible internals')],
+    ['Rear display', W('Always-on OLED strip', 'Notifications · live nmap % · battery %'), N('None'), N('None')],
+    ['Payments', T('Google Wallet — double-press power', 'Optional de-Googled mode'), T('Apple Pay', ''), T('Samsung Wallet / Google Wallet', '')],
+  ];
+  $('#tbl').innerHTML = `<thead><tr><th class="rl">Spec</th><th class="us">Atomic Phone<small>In development · design targets</small></th><th>iPhone 18 Pro Max<small>Apple · September 2026</small></th><th>Galaxy S26 Ultra<small>Samsung · 2026</small></th></tr></thead><tbody>${rows.map(r => `<tr><th class="rl">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody>`;
+}
+function renderReserve() {
+  const m = MODELS[state.model];
+  $('#o-model').innerHTML = ORDER.map(id => `<button type="button" class="opt" role="radio" aria-checked="${state.model === id}" data-model="${id}"><b>${MODELS[id].name}</b><small>${MODELS[id].line}</small><span class="p">From ${CHF(from(id))} · deposit ${CHF(MODELS[id].deposit)}</span></button>`).join('');
+  $('#o-cw').innerHTML = m.colorways.map(cw => `<button type="button" class="opt cw" role="radio" aria-checked="${state.cw === cw}" data-cw="${cw}">${swatch(cw, false, true)}<span class="t"><b>${COLORWAYS[cw].short || COLORWAYS[cw].name}</b><small>${COLORWAYS[cw].ltd ? 'Limited edition' : 'Circuit-trace accent'}</small></span></button>`).join('');
+  $('#o-st').innerHTML = m.storage.map(s => `<button type="button" class="opt" role="radio" aria-checked="${state.storage === s}" data-st="${s}"><b>${GB(s)}</b><span class="p">${CHF(m.prices[s])}</span></button>`).join('');
+  $('#sv-model').textContent = m.short; $('#sv-cw').textContent = COLORWAYS[state.cw].name; $('#sv-st').textContent = GB(state.storage);
+  $('#s-title').textContent = m.name; $('#s-cfg').textContent = `${COLORWAYS[state.cw].name} · ${GB(state.storage)}`;
+  $('#s-price').textContent = CHF(m.prices[state.storage]); $('#s-dep').textContent = CHF(m.deposit); $('#s-dep2').textContent = CHF(m.deposit); $('#s-today').textContent = `${CHF(m.deposit)} — deposit only`;
+  $('#btn-reserve').textContent = `Reserve for ${CHF(m.deposit)}`;
+}
+
+/* ── transitions ────────────────────────────────────────────────────── */
+function setModel(id, scroll) {
+  if (!MODELS[id]) return; const changed = id !== state.model; state.model = id;
+  if (!MODELS[id].colorways.includes(state.cw)) state.cw = 'black-turquoise';
+  if (!MODELS[id].storage.includes(state.storage)) state.storage = MODELS[id].storage[0];
+  renderTop(); renderModels(); renderCompare(); renderFinish(); renderReserve();
+  if (changed) updateFeatureText();
+  for (const [k, v] of Object.entries(V)) { if (k.startsWith('f-')) { const f = FEATURES.find(x => 'f-' + x.id === k); v.setView(featView(f, MODELS[id], f.alt ? state.side : 'right')); } v.set(id, state.cw, !changed); }
+  if (scroll) document.getElementById(scroll).scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+  prefetch();
+}
+function setColorway(cw) {
+  if (!MODELS[state.model].colorways.includes(cw)) return; state.cw = cw;
+  renderFinish(); renderReserve();
+  for (const v of Object.values(V)) v.set(state.model, cw, true);
+}
+function setSide(side) { state.side = side; $$('.sides button').forEach(b => b.setAttribute('aria-pressed', b.dataset.side === side)); const v = V['f-buttons']; if (v) { const f = FEATURES.find(x => x.id === 'buttons'); v.setView(featView(f, MODELS[state.model], side)); } }
+
+const fetched = new Set(); let chain = Promise.resolve();
+function prefetch() {
+  const list = [...MODELS[state.model].colorways.map(cw => glb(state.model, cw)), ...ORDER.filter(m => m !== state.model).map(m => glb(m, 'black-turquoise'))];
+  for (const u of list) { if (fetched.has(u)) continue; fetched.add(u); chain = chain.then(() => fetch(u, { priority: 'low', cache: 'force-cache' }).then(r => r.arrayBuffer()).catch(() => {})); }
+}
+
+/* ── reveals, pill, terminal ────────────────────────────────────────── */
+const rvIO = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); rvIO.unobserve(e.target); } }, { rootMargin: '0px 0px -6% 0px', threshold: .06 });
+function observe(list) { list.forEach(x => rvIO.observe(x)); }
+new IntersectionObserver(([e]) => $('#pill').classList.toggle('on', !e.isIntersecting), { threshold: 0 }).observe($('#top'));
+function terminal() {
+  const body = $('#term'); const P = '<span class="p">atomic@one</span>:~$ ';
+  const wait = ms => new Promise(r => setTimeout(r, REDUCED ? 0 : ms));
+  const script = [
+    { cmd: 'nmap -sS -T4 10.0.0.0/24' }, { out: 'Starting Nmap 7.98 ( https://nmap.org )', d: 400 }, { out: '<span class="w">Nmap scan report for 10.0.0.1</span>', d: 900 }, { out: '22/tcp   open  ssh', d: 140 }, { out: '443/tcp  open  https', d: 120 }, { out: '<span class="w">Nmap done: 256 IP addresses (24 hosts up)</span>', d: 420 },
+    { cmd: 'killswitch --status', d: 700 }, { out: 'radio   <span class="w">[HW] disconnected</span>   confirmed by physical press', d: 240, fx: () => $('#t-radio').textContent = 'KILLED' }, { out: 'camera  <span class="w">[HW] cover on</span>       confirmed by physical press', d: 200, fx: () => $('#t-cam').textContent = 'COVER' }, { out: 'mic     <span class="w">[HW] cover on</span>       confirmed by physical press', d: 200, fx: () => $('#t-mic').textContent = 'COVER' },
+    { cmd: 'telemetry --list', d: 700 }, { out: '<span class="w">0 endpoints. Nothing to disable.</span>', d: 400 }, { prompt: true },
+  ];
+  const line = h => { const d = document.createElement('div'); d.innerHTML = h; body.appendChild(d); return d; };
+  async function type(text) { const d = line(P + '<span class="t"></span><i class="cur"></i>'); const t = $('.t', d); for (const ch of text) { t.textContent += ch; await wait(30 + Math.random() * 55 + (ch === ' ' && Math.random() < .3 ? 110 : 0)); } await wait(240); $('.cur', d).remove(); }
+  let started = false;
+  const run = async () => { if (started) return; started = true; for (const s of script) { if (s.cmd) { await wait(s.d || 250); await type(s.cmd); } else if (s.prompt) line(P + '<i class="cur"></i>'); else { await wait(s.d + Math.random() * 80); line(s.out); s.fx && s.fx(); } } };
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) run(); }, { threshold: .3 }).observe(body);
+}
+
+/* ── reserve → Stripe ───────────────────────────────────────────────── */
+async function reserve() {
+  const btn = $('#btn-reserve'), err = $('#err'); err.classList.remove('on'); btn.disabled = true; const label = btn.textContent; btn.textContent = 'Opening secure checkout…';
+  try {
+    const r = await fetch(RESERVE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: state.model, colorway: state.cw, storage: state.storage }) });
+    const j = await r.json().catch(() => ({})); if (!r.ok || !j.url) throw new Error(j.error || `HTTP ${r.status}`); location.href = j.url;
+  } catch (e) { err.innerHTML = `Checkout couldn't be opened right now (${String(e.message || e).replace(/</g, '&lt;')}). Try again in a moment, or email <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a> and we'll reserve it for you by hand.`; err.classList.add('on'); btn.disabled = false; btn.textContent = label; }
+}
+function returned() {
+  const q = new URLSearchParams(location.search), b = $('#banner');
+  if (q.get('reserved') === 'success') { b.innerHTML = `<h3>You're on the list.</h3><p>Your deposit has been received and your place in line is secured — Stripe is emailing a receipt. <b>Atomic Phone is still in active development and the release date has not been finalized</b>; we'll write to you well before anything ships. Your deposit is fully refundable at any time: contact <a href="mailto:pavlo@atomicai.ch">pavlo@atomicai.ch</a>.</p>`; b.classList.add('on'); setTimeout(() => b.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400); }
+  else if (q.get('reserved') === 'cancel') { b.innerHTML = `<h3>No charge was made.</h3><p>You left checkout before paying, so nothing was reserved and nothing was charged. Your configuration is still here whenever you're ready.</p>`; b.classList.add('on'); setTimeout(() => b.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400); }
+}
+
+/* ── events ─────────────────────────────────────────────────────────── */
+document.addEventListener('click', e => {
+  const t = e.target;
+  const sw = t.closest('.sw[data-cw]'); if (sw) return setColorway(sw.dataset.cw);
+  const cwo = t.closest('.opt[data-cw]'); if (cwo) return setColorway(cwo.dataset.cw);
+  const mo = t.closest('.model[data-model]'); if (mo) return setModel(mo.dataset.model);
+  const mopt = t.closest('.opt[data-model]'); if (mopt) return setModel(mopt.dataset.model);
+  const st = t.closest('.opt[data-st]'); if (st) { state.storage = Number(st.dataset.st); return renderReserve(); }
+  const side = t.closest('.sides button'); if (side) return setSide(side.dataset.side);
+  if (t.closest('#btn-reserve')) reserve();
+});
+document.addEventListener('change', e => { if (e.target.id === 'cmp-sel') { state.cmp = e.target.value; renderCompare(); } });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return; const r = e.target.closest('[role="radio"]'); if (!r) return;
+  const g = $$('[role="radio"]', r.closest('[role="radiogroup"]')); const n = g[(g.indexOf(r) + (e.key === 'ArrowRight' ? 1 : -1) + g.length) % g.length]; if (n) { n.focus(); n.click(); e.preventDefault(); }
+});
+
+/* ── boot ───────────────────────────────────────────────────────────── */
+function boot() {
+  $('#year').textContent = new Date().getFullYear();
+  renderTop(); renderModels(); renderCompare(); renderFinish(); renderFeatures(); renderTable(); renderReserve(); terminal(); returned();
+  observe($$('.rv, .rv-kids').filter(x => !x.closest('#features')));
+  customElements.whenDefined('model-viewer').then(() => {
+    const MV = customElements.get('model-viewer');
+    MV.dracoDecoderLocation = 'lib/draco/'; MV.modelCacheSize = SMALL ? 3 : 6; MV.minimumRenderScale = 0.6;
+    mount('hero', $('#v-hero'), { alt: 'Atomic Phone One in Black / Turquoise — interactive 3D model, drag to rotate', spin: true, hint: true, interactive: true, view: HOME, onFirst: prefetch });
+    lazy('color', $('#v-color'), { alt: 'Atomic Phone in the selected finish — interactive 3D model', spin: true, hint: false, interactive: true, view: HOME });
+    lazy('sum', $('#v-sum'), { alt: 'Your configured Atomic Phone — 3D model', spin: true, hint: false, interactive: false, view: HOME }, 700);
+  });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+window.__atomic = { state, setModel, setColorway, V, MODELS, COLORWAYS, DEVICES, SKU_PRICE_IDS };
+})();
+</script>
+</body>
+</html>

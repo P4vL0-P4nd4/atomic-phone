@@ -1,0 +1,19 @@
+{
+  "name": "atomic-phone-tools",
+  "private": true,
+  "type": "module",
+  "description": "Asset pipeline for phone.atomicai.ch — GLB optimisation, studio HDRI generation, poster rendering.",
+  "scripts": {
+    "optimize": "for f in ../../Colorway-2/*/*.glb; do node optimize.mjs \"$f\" \"../models/$(basename \"$f\")\" 'tex=2048 q=88'; node optimize.mjs \"$f\" \"../models/m/$(basename \"$f\")\" 'tex=1024 q=85'; done",
+    "hdr": "node makehdr.mjs ../env/atomic-studio.hdr 1024 512 C",
+    "posters": "node posters.mjs"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "^4",
+    "@gltf-transform/extensions": "^4",
+    "@gltf-transform/functions": "^4",
+    "draco3dgltf": "^1.5",
+    "puppeteer": "^25",
+    "sharp": "^0.34"
+  }
+}

@@ -1,0 +1,8 @@
+# Netlify — phone.atomicai.ch
+[build]
+  publish = "."
+  command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
