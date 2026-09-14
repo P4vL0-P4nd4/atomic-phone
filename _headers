@@ -6,15 +6,20 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 # Versioned assets (the page appends ?v=<ASSET_V> to every model/poster/env URL) — cache hard.
+# CORS: atomicai.ch embeds the hero model + runtime from here (homepage promo section).
 /models/*
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: model/gltf-binary
+  Access-Control-Allow-Origin: *
 /posters/*
   Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
 /env/*
   Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
 /lib/*
   Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
 /lib/draco/*.wasm
   Content-Type: application/wasm
 /index.html

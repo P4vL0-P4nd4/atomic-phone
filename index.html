@@ -74,7 +74,12 @@ img{max-width:100%;display:block}
 .topbar nav a{text-decoration:none;transition:color .2s}
 .topbar nav a:hover{color:var(--ink)}
 .topbar nav .btn{min-height:32px;padding:0 14px;font-size:14px}
-@media (max-width:640px){.topbar nav a.plain{display:none}}
+.menu-btn{display:none;width:44px;height:44px;margin-right:-10px;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:12px}
+.menu-btn i{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s var(--ease),opacity .2s}
+.menu-btn[aria-expanded="true"] i:first-child{transform:translateY(4px) rotate(45deg)}.menu-btn[aria-expanded="true"] i:last-child{transform:translateY(-4px) rotate(-45deg)}
+.menu{position:absolute;top:var(--bar);left:0;right:0;background:#000;border-bottom:1px solid var(--rule);padding:6px 20px 14px;z-index:49}
+.menu a{display:block;padding:15px 0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:var(--ink);text-decoration:none;border-top:1px solid var(--rule-soft)}
+.menu a:first-child{border-top:0}
 
 /* ── viewer ─────────────────────────────────────────────────────────── */
 .v{position:relative;width:100%;height:100%;min-height:280px}
@@ -124,7 +129,6 @@ html.js .stage-hero{animation:up 1.1s var(--ease) .35s both}
 .model .meta{margin-top:18px;font-size:15.5px;color:var(--ink-3);line-height:1.6}
 .model .meta b{display:block;color:var(--ink-2);font-weight:600}
 .model .meta .tq{font-weight:600}
-@media (max-width:760px){.models{grid-template-columns:1fr;gap:6px}.model{padding:20px 0 18px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px}.model .name{font-size:clamp(46px,14vw,72px)}.model .meta{margin:0;text-align:right}}
 
 /* ── compare with ───────────────────────────────────────────────────── */
 .cmp-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
@@ -146,8 +150,6 @@ html.js .stage-hero{animation:up 1.1s var(--ease) .35s both}
 .stat .vs b{color:var(--ink-2);font-weight:600}
 .cmp-note{margin-top:18px;font-size:13.5px;color:var(--ink-3);line-height:1.6;max-width:70ch}
 .cmp-note i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--tq);vertical-align:-1px;margin-right:6px}
-@media (max-width:980px){.stats{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.stats{grid-template-columns:1fr}.stat{min-height:0}}
 
 /* ── colorway picker ────────────────────────────────────────────────── */
 .stage-color{height:min(88vh,900px);height:min(88svh,900px)}
@@ -203,7 +205,6 @@ html.js .stage-hero{animation:up 1.1s var(--ease) .35s both}
 @keyframes blink{50%{opacity:0}}
 .gut{margin-top:clamp(48px,6vw,80px);font-size:clamp(26px,3.2vw,44px);font-weight:700;letter-spacing:-.035em;line-height:1.12;max-width:26ch}
 .gut b{color:var(--tq)}
-@media (max-width:720px){.sec-grid{grid-template-columns:1fr}}
 
 /* ── comparison table ───────────────────────────────────────────────── */
 .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:clamp(36px,5vw,64px)}
@@ -263,8 +264,6 @@ table.tbl{width:100%;border-collapse:collapse;min-width:780px;font-size:16px}
 .banner h3{font-size:24px;font-weight:700;letter-spacing:-.03em}
 .banner p{margin-top:8px;font-size:16px;color:var(--ink-2);line-height:1.6}
 .banner a{color:var(--tq)}
-@media (max-width:960px){.res{display:block}.side{position:static;margin-top:20px}.opts.c4{grid-template-columns:repeat(2,1fr)}.opts.c3{grid-template-columns:1fr}}
-@media (max-width:520px){.opts.c4{grid-template-columns:repeat(2,1fr)}}
 
 /* ── footer ─────────────────────────────────────────────────────────── */
 .foot{border-top:1px solid var(--rule);padding:56px 0 48px;font-size:14px;color:var(--ink-3)}
@@ -279,8 +278,6 @@ table.tbl{width:100%;border-collapse:collapse;min-width:780px;font-size:16px}
 .foot a:hover{color:var(--tq)}
 .foot-brand p{margin-top:12px;line-height:1.6;max-width:36ch}
 .foot-bottom{margin-top:40px;padding-top:22px;border-top:1px solid var(--rule-soft);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px}
-@media (max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.foot-grid{grid-template-columns:1fr}}
 
 /* ── fixed price / availability pill ────────────────────────────────── */
 .pill{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 18px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid var(--rule);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 20px 50px -20px rgba(0,0,0,.9);transform:translateY(20px);opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .5s var(--ease)}
@@ -289,7 +286,110 @@ table.tbl{width:100%;border-collapse:collapse;min-width:780px;font-size:16px}
 .pill .t b{display:block;font-weight:600;color:var(--ink)}
 .pill .t span{color:var(--ink-3);font-size:12.5px}
 .pill .btn{min-height:36px;padding:0 16px;font-size:14px}
-@media (max-width:560px){.pill{right:12px;left:12px;bottom:12px;justify-content:space-between}}
+
+
+/* ═══ Responsive — two breakpoints, matched on viewport width only.
+   phone  ≤ 640px  (the same query the JS uses to serve the 1K models)
+   tablet ≤ 1023px
+   desktop above.                                                         ═══ */
+@media (max-width:1023px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .res{display:block}
+  .side{position:static;margin-top:28px}
+  .summary{max-width:560px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  table.tbl{min-width:0;font-size:15px}
+  .tbl th,.tbl td{padding:14px 10px}
+  .tbl thead th{font-size:16px}
+  .tbl th.rl{width:150px;font-size:13.5px}
+  .tbl td small{font-size:12.5px}
+}
+@media (max-width:640px){
+  :root{--bar:52px}
+  .section{padding:64px 0}
+  .wrap{padding:0 20px}
+  /* type */
+  .claim{font-size:clamp(40px,11.5vw,52px);letter-spacing:-.04em}
+  .claim-md{font-size:clamp(33px,9.4vw,44px)}
+  .copy{font-size:17px;max-width:none}
+  .eyebrow{font-size:15px;margin-bottom:10px}
+  /* nav: brand + Reserve + hamburger */
+  .brand small{display:none}
+  .topbar nav{gap:10px}
+  .topbar nav a.plain{display:none}
+  .menu-btn{display:flex}
+  /* hero */
+  .hero{padding-top:40px}
+  .hero .sub{font-size:19px;margin-top:18px}
+  .hero .cta{margin-top:24px}
+  .hero .cta .btn{flex:1 1 140px}
+  .stage-hero{height:min(92svh,720px)}
+  .hero-notice{font-size:13.5px;padding:16px 0}
+  /* model picker: stack, name above meta */
+  .models{grid-template-columns:1fr;gap:8px;margin-top:28px}
+  .model{padding:22px 0 20px}
+  .model .name{font-size:clamp(48px,15vw,64px)}
+  .model .meta{margin-top:12px;font-size:15px}
+  /* compare */
+  .cmp-head{margin-bottom:24px}
+  .cmp-head .lbl{font-size:19px}
+  .sel select{font-size:18px;padding:10px 40px 10px 16px}
+  .stats{grid-template-columns:1fr;gap:10px}
+  .stat{min-height:0;padding:22px 20px 20px;gap:14px}
+  .stat .big{font-size:36px}
+  .stat .big.long{font-size:28px}
+  /* finish picker */
+  .stage-color{height:min(78svh,620px)}
+  .swatches{gap:16px}
+  .sw{width:44px;height:44px}
+  .sw i{inset:5px}
+  /* features */
+  .feat{padding-top:56px}
+  .macro{height:min(60svh,520px)}
+  .feat-text{padding:28px 0 64px}
+  .feat-text .copy{margin-top:18px}
+  .keys{margin-top:26px;grid-template-columns:1fr 1fr;gap:16px 18px}
+  .key b{font-size:19px}
+  .callout{padding:18px 18px;font-size:15.5px;margin-top:22px}
+  .sides{display:flex;width:100%;margin-top:22px}
+  .sides button{flex:1;padding:10px 8px;font-size:13.5px;white-space:nowrap}
+  /* security */
+  .sec-grid{grid-template-columns:1fr;gap:26px;margin-top:40px}
+  .sec-item h3{font-size:22px}
+  .sec-item p{font-size:16px}
+  .term{font-size:12.5px;margin-top:40px}
+  .term-body{padding:14px 14px 18px;min-height:0}
+  .gut{font-size:26px;margin-top:40px}
+  /* versus table → stacked cards, no horizontal scroll */
+  .tbl-wrap{overflow:visible;margin-top:32px}
+  table.tbl,.tbl tbody,.tbl tr,.tbl th,.tbl td{display:block;width:auto;min-width:0}
+  .tbl thead{display:none}
+  .tbl tr{padding:18px 0 6px;border-bottom:1px solid var(--rule)}
+  .tbl th.rl{width:auto;padding:0 0 10px;border:0;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .tbl td{padding:9px 0;border:0;display:grid;grid-template-columns:104px minmax(0,1fr);gap:10px;font-size:15px;line-height:1.45}
+  .tbl td::before{content:attr(data-col);color:var(--ink-3);font-size:13px;padding-top:2px}
+  .tbl td[data-col="Atomic"]::before{color:var(--tq)}
+  .tbl td small{font-size:12.5px}
+  .tbl-note{font-size:12.5px}
+  /* reserve */
+  .res{margin-top:28px}
+  .step{padding:22px 0}
+  .step-h h3{font-size:21px}
+  .opts.c3{grid-template-columns:1fr}
+  .opts.c4{grid-template-columns:1fr 1fr}
+  .opt{padding:15px 14px;min-height:56px}
+  .summary{max-width:none;border-radius:22px}
+  .summary .v{height:260px;min-height:260px}
+  .sum-body{padding:18px 18px 20px}
+  .sum-body h3{font-size:21px}
+  .banner{padding:18px 18px}
+  /* footer + pill */
+  .foot{padding:44px 0 120px}
+  .foot-grid{grid-template-columns:1fr;gap:26px;margin-top:30px}
+  .foot-bottom{flex-direction:column;gap:6px}
+  .pill{right:12px;left:12px;bottom:12px;justify-content:space-between;padding:8px 8px 8px 16px
+  .pill .btn{min-height:40px}}
+}
 
 /* ── reveals ────────────────────────────────────────────────────────── */
 html.js .rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .8s var(--ease)}
@@ -310,7 +410,16 @@ html.js .rv-kids.in>*{opacity:1;transform:none}
       <a class="plain" href="#compare">Compare</a>
       <a class="plain" href="#security">Atomic OS</a>
       <a class="btn btn-fill" href="#reserve">Reserve</a>
+      <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
     </nav>
+  </div>
+  <div class="menu" id="menu" hidden>
+    <a href="#models">Models</a>
+    <a href="#compare">Compare</a>
+    <a href="#finish">Finishes</a>
+    <a href="#security">Atomic OS</a>
+    <a href="#versus">Versus the flagships</a>
+    <a href="#reserve" class="tq">Reserve</a>
   </div>
 </header>
 
@@ -707,7 +816,7 @@ function renderTable() {
     ['Rear display', W('Always-on OLED strip', 'Notifications · live nmap % · battery %'), N('None'), N('None')],
     ['Payments', T('Google Wallet — double-press power', 'Optional de-Googled mode'), T('Apple Pay', ''), T('Samsung Wallet / Google Wallet', '')],
   ];
-  $('#tbl').innerHTML = `<thead><tr><th class="rl">Spec</th><th class="us">Atomic Phone<small>In development · design targets</small></th><th>iPhone 18 Pro Max<small>Apple · September 2026</small></th><th>Galaxy S26 Ultra<small>Samsung · 2026</small></th></tr></thead><tbody>${rows.map(r => `<tr><th class="rl">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody>`;
+  $('#tbl').innerHTML = `<thead><tr><th class="rl">Spec</th><th class="us">Atomic Phone<small>In development · design targets</small></th><th>iPhone 18 Pro Max<small>Apple · September 2026</small></th><th>Galaxy S26 Ultra<small>Samsung · 2026</small></th></tr></thead><tbody>${rows.map(r => `<tr><th class="rl">${r[0]}</th><td data-col="Atomic">${r[1]}</td><td data-col="iPhone 18 Pro Max">${r[2]}</td><td data-col="Galaxy S26 Ultra">${r[3]}</td></tr>`).join('')}</tbody>`;
 }
 function renderReserve() {
   const m = MODELS[state.model];
@@ -793,6 +902,17 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return; const r = e.target.closest('[role="radio"]'); if (!r) return;
   const g = $$('[role="radio"]', r.closest('[role="radiogroup"]')); const n = g[(g.indexOf(r) + (e.key === 'ArrowRight' ? 1 : -1) + g.length) % g.length]; if (n) { n.focus(); n.click(); e.preventDefault(); }
 });
+
+/* ── phone menu — shown by the same ≤640px query that selects the 1K models ── */
+const PHONE = matchMedia('(max-width: 640px)');
+function menu(open) {
+  const b = $('#menu-btn'), m = $('#menu'); const on = open === undefined ? m.hidden : open;
+  m.hidden = !on; b.setAttribute('aria-expanded', String(on)); b.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
+}
+$('#menu-btn').addEventListener('click', () => menu());
+$('#menu').addEventListener('click', e => { if (e.target.closest('a')) menu(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#menu').hidden) menu(false); });
+PHONE.addEventListener('change', e => { if (!e.matches) menu(false); });
 
 /* ── boot ───────────────────────────────────────────────────────────── */
 function boot() {
